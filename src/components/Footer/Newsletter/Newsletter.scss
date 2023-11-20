@@ -68,6 +68,10 @@
                 @include md {
                     width: 120px;
                 }
+                &:hover{
+                    opacity: 0.6;
+                    color: red;
+                }
             }
         }
         .social-icons {

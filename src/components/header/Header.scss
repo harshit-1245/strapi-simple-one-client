@@ -1,4 +1,4 @@
-@import "../../css-config/mixins.scss";
+@import '../../css-config//mixins.scss';
 
 .main-header {
     width: 100%;
@@ -8,9 +8,11 @@
     color: white;
     border-bottom: 1px solid;
     border-color: rgba(0, 0, 0, 0.1);
+
     @include md {
         padding: 0 40px;
     }
+
     .header-content {
         display: flex;
         justify-content: space-between;
@@ -18,31 +20,63 @@
         height: 50px;
         max-width: 1200px;
         margin: 0 auto;
+
         @include md {
             height: 80px;
         }
     }
+
     .left {
         list-style-type: none;
-        display: none;
+        display: flex;
         gap: 25px;
-        @include md {
-            display: flex;
+
+        .dropdown {
+            position: relative;
+
+            &:hover {
+                .dropdown-content {
+                    display: block;
+                }
+            }
+
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                background-color: #fff;
+                box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+                z-index: 1;
+
+                li {
+                    padding: 12px;
+                    cursor: pointer;
+                }
+            }
         }
+
+        &:hover .dropdown-content {
+            display: block;
+        }
+
         li {
             font-size: 14px;
             font-weight: 600;
             text-transform: uppercase;
             cursor: pointer;
+
             &:hover {
                 opacity: 0.6;
             }
         }
     }
+
     .center {
         font-size: 22px;
         font-weight: 700;
         cursor: pointer;
+
         @include md {
             font-size: 34px;
             position: absolute;
@@ -50,25 +84,32 @@
             transform: translateX(-50%);
         }
     }
+
     .right {
         display: flex;
         align-items: center;
         gap: 20px;
+
         @include md {
             gap: 25px;
         }
+
         svg {
             font-size: 20px;
             cursor: pointer;
+
             @include md {
                 font-size: 24px;
             }
+
             &:hover {
                 opacity: 0.6;
             }
         }
+
         .cart-icon {
             position: relative;
+
             span {
                 min-width: 20px;
                 text-align: center;
@@ -83,6 +124,7 @@
             }
         }
     }
+
     &.sticky-header {
         background-color: #212121;
         color: white;
@@ -97,6 +139,7 @@
     0% {
         transform: translateY(-60px);
     }
+
     100% {
         transform: translateY(0);
     }

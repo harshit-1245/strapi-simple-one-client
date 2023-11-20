@@ -1,65 +1,61 @@
-import React, { useState } from "react";
-import { MdClose } from "react-icons/md";
+import React, { useState } from 'react'
+import {MdClose} from "react-icons/md"
+import prod from "../../../assets/category/download-3.jpg"
 import "./Search.scss";
+import { useNavigate } from 'react-router-dom';
 import useFetch from "../../../hooks/useFetch";
-import { useNavigate } from "react-router-dom";
 
-const Search = ({ setSearchModal }) => {
-    const [query, setQuery] = useState("");
-    const navigate = useNavigate();
+const Search = ({setShowSearch}) => {
+  const [query,setQuery]=useState("");
+  const navigate=useNavigate();
 
-    const onChange = (e) => {
-        setQuery(e.target.value);
-    };
+  let onChange=(e)=>{
+    setQuery(e.target.value);
+  }
 
-    let { data } = useFetch(
-        `/api/products?populate=*&filters[title][$contains]=${query}`
-    );
+//this end point has some opertaor go on stripi documentation to understand
+//this helps to 
 
-    if (!query.length) {
-        data = null;
-    }
 
-    return (
-        <div className="search-modal">
-            <div className="form-field">
-                <input
-                    autoFocus
-                    type="text"
-                    placeholder="Search for products"
-                    value={query}
-                    onChange={onChange}
-                />
-                <MdClose
-                    className="close-btn"
-                    onClick={() => setSearchModal(false)}
-                />
-            </div>
-            <div className="search-result-content">
-                {!data?.data?.length && (
-                    <div className="start-msg">
-                        Start typing to see products you are looking for.
-                    </div>
-                )}
-                <div className="search-results">
-                    {data?.data?.map((item) => (
+
+let { data } = useFetch(
+  `/api/products?populate=*&filters[title][$contains]=${query}`
+);
+console.log(data)
+//if there is nothing in search
+if(!query.length){
+  data=null;
+}
+
+
+  return (
+    <div className="search-modal">
+      <div className="form-field">
+        <input type="text" 
+        autoFocus
+        placeholder='Search for products'
+        value={query}
+        onChange={onChange}/>
+        <MdClose onClick={()=>setShowSearch(false)}/>
+      </div>
+      <div className="search-result-content">
+        <div className="search-results">
+        {data?.data?.map((item) => (
                         <div
                             className="search-result-item"
                             key={item.id}
-                            onClick={() => {
-                                navigate("/product/" + item.id);
-                                setSearchModal(false);
-                            }}
-                        >
+                       onClick={()=>{navigate("/product/" + item.id)
+                      setShowSearch(false)}}     
+                           
+                >
                             <div className="image-container">
-                                <img
-                                    src={
-                                        process.env
-                                            .REACT_APP_STRIPE_APP_DEV_URL +
-                                        item.attributes.image.data[0].attributes
-                                            .url
-                                    }
-                                />
+                              {/* this is super error that thakes soo much time to fix it */}
+                            {item?.img && item?.img?.data && item?.img?.data[0] && item?.img?.data[0]?.attributes && (
+  <img
+    src={process.env.REACT_APP_STRIPE_APP_DEV_URL + item?.attributes?.img?.data[0]?.attributes?.url}
+    alt=""
+  />
+)}
                             </div>
                             <div className="prod-details">
                                 <span className="name">
@@ -71,10 +67,11 @@ const Search = ({ setSearchModal }) => {
                             </div>
                         </div>
                     ))}
-                </div>
-            </div>
+         
         </div>
-    );
-};
+      </div>
+    </div>
+  )
+}
 
-export default Search;
+export default Search
